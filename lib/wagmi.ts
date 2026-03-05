@@ -1,5 +1,6 @@
-import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { http } from "viem";
+import { createConfig, http } from "wagmi";
+import { connectorsForWallets } from "@rainbow-me/rainbowkit";
+import { injectedWallet, walletConnectWallet } from "@rainbow-me/rainbowkit/wallets";
 
 // XDC chain IDs:
 // - Mainnet: 50 (0x32)
@@ -32,11 +33,23 @@ export const xdcApothem = {
   testnet: true,
 } as const;
 
-export const wagmiConfig = getDefaultConfig({
-  appName: "Mushee • XDC DeFi Demo",
-  projectId:
-    process.env.NEXT_PUBLIC_WC_PROJECT_ID || "YOUR_WALLETCONNECT_PROJECT_ID",
-  chains: [xdcApothem, xdcMainnet],
+const projectId =
+  process.env.NEXT_PUBLIC_WC_PROJECT_ID || "YOUR_WALLETCONNECT_PROJECT_ID";
+
+// IMPORTANT: Using injectedWallet keeps MetaMask working WITHOUT importing MetaMask SDK.
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: "Wallets",
+      wallets: [injectedWallet, walletConnectWallet],
+    },
+  ],
+  { appName: "Mushee • XDC DeFi Demo", projectId }
+);
+
+export const wagmiConfig = createConfig({
+  chains: [xdcApothem, xdcMainnet] as any,
+  connectors,
   transports: {
     [xdcApothem.id]: http(xdcApothem.rpcUrls.default.http[0]),
     [xdcMainnet.id]: http(xdcMainnet.rpcUrls.default.http[0]),
