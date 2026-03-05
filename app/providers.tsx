@@ -4,7 +4,7 @@ import * as React from "react";
 import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { wagmiConfig, xdcApothem, xdcMainnet } from "@/lib/wagmi";
+import { wagmiConfig, xdcApothem } from "@/lib/wagmi";
 
 const queryClient = new QueryClient();
 
@@ -21,8 +21,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
           })}
           modalSize="compact"
           initialChain={xdcApothem}
-          showRecentTransactions={true}
->
+          showRecentTransactions
+        >
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
