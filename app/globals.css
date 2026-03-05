@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  @apply bg-black text-white antialiased;
+}
+
+a {
+  @apply underline underline-offset-4;
+}
+
+::selection {
+  background: white;
+  color: black;
+}
